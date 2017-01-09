@@ -121,7 +121,11 @@ Error message and password prompt
 
 <li>$:/config/DefaultSidebarTab</li>
 
+<li>$:/config/WikiParserRules/Inline/wikilink</li>
+
 <li>$:/core</li>
+
+<li>$:/DefaultTiddlers</li>
 
 <li>$:/isEncrypted</li>
 
@@ -176,6 +180,8 @@ Error message and password prompt
 <li>$:/state/toc/Course Notes-CO 750 - Topics in Approximation Algorithms--81657105</li>
 
 <li>$:/state/toc/TableOfContents-Course Notes--81657105</li>
+
+<li>$:/state/toc/TableOfContents-Curriculum Vitae--81657105</li>
 
 <li>$:/StoryList</li>
 
@@ -301,15 +307,33 @@ Error message and password prompt
 
 <li>$:/themes/tiddlywiki/vanilla</li>
 
+<li>Awards and Honours</li>
+
 <li>CO 750 - Topics in Approximation Algorithms</li>
 
+<li>Contact Information</li>
+
 <li>Course Notes</li>
+
+<li>Curriculum Vitae</li>
+
+<li>Education</li>
+
+<li>Employment</li>
 
 <li>Lecture 1</li>
 
 <li>Lecture 2</li>
 
+<li>Presentations</li>
+
+<li>Publications</li>
+
+<li>Research Interests</li>
+
 <li>TableOfContents</li>
+
+<li>Teaching Experience</li>
 
 </ul>
 </p>
@@ -323,6 +347,9 @@ Error message and password prompt
 <div id="storeArea" style="display:none;">
 <div created="20170103205351643" modified="20170103205351643" title="$:/config/DefaultSidebarTab">
 <pre>TableOfContents</pre>
+</div>
+<div created="20170109165709800" modified="20170109165709800" title="$:/config/WikiParserRules/Inline/wikilink">
+<pre>disable</pre>
 </div>
 <div author="JeremyRuston" core-version="&gt;=5.0.0" dependents="" description="TiddlyWiki5 core" list="readme" plugin-priority="0" plugin-type="plugin" title="$:/core" type="application/json" version="5.1.13">
 <pre>{
@@ -7972,6 +7999,12 @@ Error message and password prompt
     }
 }</pre>
 </div>
+<div created="20170109180650818" modified="20170109180733422" title="$:/DefaultTiddlers">
+<pre>[[Curriculum Vitae]]
+[[Course Notes]]
+GettingStarted
+</pre>
+</div>
 <div title="$:/isEncrypted">
 <pre>no</pre>
 </div>
@@ -8390,10 +8423,10 @@ Error message and password prompt
 <div created="20170103202623081" modified="20170103202709608" title="$:/state/tab-1342078386">
 <pre>$:/core/ui/ControlPanel/Plugins/Add/Plugins</pre>
 </div>
-<div created="20170103202547257" modified="20170106164607777" title="$:/state/tab-1749438307">
-<pre>$:/core/ui/ControlPanel/Plugins</pre>
+<div created="20170103202547257" modified="20170109165740127" title="$:/state/tab-1749438307">
+<pre>$:/core/ui/ControlPanel/Settings</pre>
 </div>
-<div created="20170103205338324" modified="20170106165506790" title="$:/state/tab/sidebar--1835078512">
+<div created="20170103205338324" modified="20170109180639758" title="$:/state/tab/sidebar--1835078512">
 <pre>TableOfContents</pre>
 </div>
 <div created="20170105211219552" modified="20170105211219552" title="$:/state/toc/Course Notes-CO 750 - Topics in Approximation Algorithms--81657105">
@@ -8402,7 +8435,10 @@ Error message and password prompt
 <div created="20170103210206602" modified="20170103210206602" title="$:/state/toc/TableOfContents-Course Notes--81657105">
 <pre>open</pre>
 </div>
-<div list="[[Lecture 2]] [[CO 750 - Topics in Approximation Algorithms]] [[Course Notes]]" title="$:/StoryList">
+<div created="20170109165651768" modified="20170109165651768" title="$:/state/toc/TableOfContents-Curriculum Vitae--81657105">
+<pre>open</pre>
+</div>
+<div list="Curriculum Vitae CourseNotes GettingStarted" title="$:/StoryList">
 <pre></pre>
 </div>
 <div plugin-type="info" title="$:/temp/info-plugin" type="application/json">
@@ -8752,8 +8788,8 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
 <div author="JeremyRuston" core-version="&gt;=5.0.0" created="20170103202621966" dependents="" description="Basic theme" modified="20170103202621966" name="Vanilla" original-plugin-type="theme" original-tags="" original-title="$:/themes/tiddlywiki/vanilla" original-type="application/json" server-url="http://tiddlywiki.com/library/v5.1.13/index.html" tags="$:/tags/RemoteAssetInfo" title="$:/temp/RemoteAssetInfo/http://tiddlywiki.com/library/v5.1.13/index.html/$:/themes/tiddlywiki/vanilla" type="text/vnd.tiddlywiki" version="5.1.13">
 <pre></pre>
 </div>
-<div created="20170106165310927" modified="20170106165458494" title="$:/temp/search">
-<pre></pre>
+<div created="20170106165310927" modified="20170109180546438" title="$:/temp/search">
+<pre>Thesis</pre>
 </div>
 <div created="20170106164611746" modified="20170106164611746" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/http://tiddlywiki.com/library/v5.1.13/index.html" url="http://tiddlywiki.com/library/v5.1.13/index.html">
 <pre>loaded</pre>
@@ -8867,6 +8903,17 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
     }
 }</pre>
 </div>
+<div created="20170109172713767" modified="20170109172939837" tags="[[Curriculum Vitae]]" title="Awards and Honours">
+<pre>* NSERC CGSM (2015)
+
+* University of Waterloo Presidents Graduate Scholarship (2015)
+
+* Graduation with Great Distinction, University of Windsor (2015)
+
+* NSERC USRA (2013)
+
+* Presidents Scholarship and Outstanding Scholars Award, University of Windsor (2011-2015)</pre>
+</div>
 <div created="20170103210117981" modified="20170106172835403" tags="[[Course Notes]]" title="CO 750 - Topics in Approximation Algorithms">
 <pre>Given in Winter 2017 by Dr. Laura Sanita at the University of Waterloo.
 
@@ -8874,8 +8921,60 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
 
 LaTex Source: https://github.com/wjtoth/courses/tree/master/CO750-ApproximationAlgorithmsTopics</pre>
 </div>
+<div created="20170109165411572" modified="20170109170907564" tags="[[Curriculum Vitae]]" title="Contact Information">
+<pre>PhD Student
+
+[[Department of Combinatorics and Optimization|https://uwaterloo.ca/combinatorics-and-optimization/]]
+
+Faculty of Mathematics
+
+University of Waterloo
+
+
+Email: [[wjtoth@uwaterloo.ca|mailto:wjtoth@uwaterloo.ca]]
+
+Phone: 226-345-7600
+
+Office: MC 5023B
+
+Github: [[wjtoth|https://github.com/wjtoth]]</pre>
+</div>
 <div created="20170103205404455" modified="20170103210525585" tags="TableOfContents" title="Course Notes">
 <pre>&lt;&lt;list-links &quot;[tag[Course Notes]]&quot;&gt;&gt;</pre>
+</div>
+<div created="20170109164705254" modified="20170109165735368" tags="TableOfContents" title="Curriculum Vitae">
+<pre>&lt;&lt;list-links &quot;[tag[Curriculum Vitae]]&quot;&gt;&gt;</pre>
+</div>
+<div created="20170109170147034" modified="20170109180542504" tags="[[Curriculum Vitae]]" title="Education">
+<pre>''Ph.D'' in Combinatorics and Optimization (January 2017 - Present)
+
+University of Waterloo, Waterloo Ontario, Canada
+
+Thesis: //TBD//
+
+Supervisor: Jochen Koenemann
+
+''M.MATH'' in Combinatorics and Optimization (September 2015 - December 2016)
+
+University of Waterloo, Waterloo Ontario, Canada
+
+Thesis: //Structure in Stable Matching Problems// [[Link|https://uwspace.uwaterloo.ca/handle/10012/11099]]
+
+Supervisor: Jochen Koenemann
+
+''B.MATH'' in Mathematics and Computer Science (September 2011 - April 2015)
+
+University of Windsor, Windsor Ontario, Canada</pre>
+</div>
+<div created="20170109171908322" modified="20170109172554446" tags="[[Curriculum Vitae]]" title="Employment">
+<pre>* Software Developer Coop, CSE, Ottawa ON, Canada (May 2015 - August 2015)
+
+* Teaching/Research Assistant, University of Windsor, Windsor ON, Canada (September 2014 - April 2014)
+
+* Software Developer Coop, CSE, Ottawa ON, Canada (May 2014 - August 2014)
+
+
+</pre>
 </div>
 <div created="20170103210625426" modified="20170106170940187" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 1">
 <pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77RXJVbFZNTjN4X0U
@@ -9230,12 +9329,44 @@ We conclude by observing that if $\alpha = 1$ our gap-producing reductions reduc
 \end{document}
 ```</pre>
 </div>
+<div created="20170109174945143" modified="20170109180104361" tags="[[Curriculum Vitae]]" title="Presentations">
+<pre>* //The Power of Locality: An Elementary Integrality Proof of Rothblum's Stable Matching Formulation//, Ottawa Mathematics Conference, Ottawa ON, Canada (June 18, 2016) [[Link|https://drive.google.com/open?id=0B7Vqc_C-iJ77RXg3MXE4aE9QdzA]]</pre>
+</div>
+<div created="20170109180026164" modified="20170109180430999" tags="[[Curriculum Vitae]]" title="Publications">
+<pre>Journal Articles
+
+* //An Elementary Integrality Proof of Rothblum's Stable Matching Formulation// J. Koenemann, K. Pashkovich, ''WJT''. Operations Research Letters. [[arXiv:1605.04427|arXiv:1605.04427|https://arxiv.org/abs/1605.04427]]</pre>
+</div>
+<div created="20170109173220925" modified="20170109174141936" tags="[[Curriculum Vitae]]" title="Research Interests">
+<pre>* Discrete Optimization
+
+* Algorithm Design and Analysis
+
+* Approximation Algorithms
+
+* Algorithmic Game Theory
+
+* Polyhedral Combinatorics</pre>
+</div>
 <div caption="Contents" created="20170103205153354" list-after="$:/core/ui/SideBar/Open" modified="20170103205335589" tags="$:/tags/SideBar" title="TableOfContents">
 <pre>&lt;div class=&quot;tc-table-of-contents&quot;&gt;
 
 &lt;&lt;toc-selective-expandable 'TableOfContents'&gt;&gt;
 
 &lt;/div&gt;</pre>
+</div>
+<div created="20170109174231425" modified="20170109174702087" tags="[[Curriculum Vitae]]" title="Teaching Experience">
+<pre>Teaching Assistantships
+
+* CO 353 Computational Discrete Optimization (Winter 2017)
+
+* CO 456 Introduction to Game Theory (Fall 2016)
+
+* MATH 128 Calculus 2 for the Sciences (Spring 2016)
+
+* CO 353 Computational Discrete Optimization (Winter 2016)
+
+* MATH 136 Linear Algebra 1 (Fall 2015)</pre>
 </div>
 
 </div>
