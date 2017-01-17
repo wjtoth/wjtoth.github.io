@@ -329,6 +329,10 @@ Error message and password prompt
 
 <li>Lecture 2</li>
 
+<li>Lecture 3</li>
+
+<li>Lecture 4</li>
+
 <li>Presentations</li>
 
 <li>Publications</li>
@@ -8438,8 +8442,8 @@ GettingStarted
 <div created="20170105211219552" modified="20170105211219552" title="$:/state/toc/Course Notes-CO 750 - Topics in Approximation Algorithms--81657105">
 <pre>open</pre>
 </div>
-<div created="20170111203007006" modified="20170111203007678" title="$:/state/toc/Course Notes-CS 798 - Convexity and Optimization--81657105">
-<pre>close</pre>
+<div created="20170111203007006" modified="20170117214531450" title="$:/state/toc/Course Notes-CS 798 - Convexity and Optimization--81657105">
+<pre>open</pre>
 </div>
 <div created="20170103210206602" modified="20170103210206602" title="$:/state/toc/TableOfContents-Course Notes--81657105">
 <pre>open</pre>
@@ -8797,7 +8801,7 @@ This plugin contains tools to help slice up long texts into individual tiddlers.
 <div author="JeremyRuston" core-version="&gt;=5.0.0" created="20170103202621966" dependents="" description="Basic theme" modified="20170103202621966" name="Vanilla" original-plugin-type="theme" original-tags="" original-title="$:/themes/tiddlywiki/vanilla" original-type="application/json" server-url="http://tiddlywiki.com/library/v5.1.13/index.html" tags="$:/tags/RemoteAssetInfo" title="$:/temp/RemoteAssetInfo/http://tiddlywiki.com/library/v5.1.13/index.html/$:/themes/tiddlywiki/vanilla" type="text/vnd.tiddlywiki" version="5.1.13">
 <pre></pre>
 </div>
-<div created="20170106165310927" modified="20170109180919894" title="$:/temp/search">
+<div created="20170106165310927" modified="20170117214411426" title="$:/temp/search">
 <pre></pre>
 </div>
 <div created="20170106164611746" modified="20170106164611746" tags="$:/tags/ServerConnection" title="$:/temp/ServerConnection/http://tiddlywiki.com/library/v5.1.13/index.html" url="http://tiddlywiki.com/library/v5.1.13/index.html">
@@ -9347,6 +9351,327 @@ which implies $opt$ is greater than $1$. Note that our proof is analogous with t
 \paragraph{}
 We conclude by observing that if $\alpha = 1$ our gap-producing reductions reduce to standard $NP$-completeness reductions.
 \end{document}
+```</pre>
+</div>
+<div created="20170117214302326" modified="20170117214447044" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 3">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77c2kwVHVkZVJiSzg
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-01-10}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 3} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+\section{Steiner Trees}
+\paragraph{}
+In the Steiner Tree (ST) problem we are given a graph $G=(V,E)$ and edge lengths (costs) $c_e \geq 0$, and a set $R \subseteq V$ called the set of terminals. We are to find a minimum cost tree $T$ connecting all the terminals.
+\paragraph{}
+Note that if $R = V$ we have a spanning tree instance (thus we can solve in polynomial time). Also if $|R| = 1$ we have a shortest path instance (and again we can solve in polynomial time). But for general $|R| = k$ the problem in $NP$-hard.
+\paragraph{}
+A function $d : V \times V \rightarrow \R_+$ is a {\it metric} if 
+\begin{enumerate}
+\item $d(u,u) = 0$
+\item $d(u,v) = d(v,u)$ for all $u,v \in V$
+\item $d(u,v) \leq d(u,z) + d(z,v)$ for all $u,v,z \in V$.
+\end{enumerate}
+An edge weighted graph is called a {\it metric graph} if its weight function induces a metric on $V \times V$. A metric graph is necessarily complete in order to make sense.
+\paragraph{}
+Let $G=(V,E)$ be a graph. Let $c : E \rightarrow \R_+$ be a weight function. The {\it metric arising from} $G$ is the function $d$ defined on $V \times V$ where
+$$d(u,v) := \text{ the length of a shortest path from } u \text{ to } v \text{ on } G \text{ according to } c.$$ Given $(G,c)$ we can construct the {\it metric completion} of $G$. That is, a complete graph $G^M := (V, E^M)$ with edge cost $d(u,v)  = $ length of shortest $uv$-path in $G$.
+\begin{lemma}
+There exists a Steiner Tree $T$ connecting $R\subseteq V$ of optimal cost $z$ if and only if there exists a Steiner Tree $\bar{T}$ connecting $R$ on $G^M$ of optimal cost $z$. Furthermore there is a polynomial time map between $T$ and $\bar{T}$.
+\end{lemma}
+\begin{proof}
+First we observe that the cost of the path between any two vertices $u,v$ in $T$ is at most the cost of the shortest $uv$-path in $G$, as otherwise we could replace the $uv$-path in $T$ with the shortest $uv$-path in $G$, and break cycles arbitrarily to obtain a new tree $T'$ of strictly lower cost than $T$. Hence the distance between any two vertices in $T$ is a shortest path distance. Thus by definition of $G^M$, both $T$ and $\bar{T}$ have same optimal cost.
+\paragraph{}
+To map from $\bar{T}$ to $T$ replace each edge that is not an edge of $G$ with a shortest path in $G$ (reverse this operation to go from $T$ to $\bar{T}$). If cycles form, break them arbitrarily.
+\end{proof}
+\paragraph{}
+Due to the previous lemma we may assume our input (ST) instances is a metric graph. Consider the following algorithm for (ST) given a metric graph $G$, weights $d$, and terminals $R \subseteq V(G)$.
+\begin{enumerate}
+\item Find a Minimum Spanning Tree $\bar{T}$ on $G[R]$
+\item Return $\bar{T}$.
+\end{enumerate}
+\begin{theorem}
+The above algorithm is a $2$-approximation for (ST).
+\end{theorem}
+\begin{proof}
+Let $T^*$ be an optimal solution to a problem instance of (ST). Create an Eulerian multigraph from $T^*$ by replacing each edge with two parallel edges. The cost of this multigraph is is at most $2d(T^*)$. Since this multigraph is Eulerian there exists an Eulerian tour $P$. Let $r \in R$. Traverse $P$ starting at $r$ and shortcut it to obtain a Hamiltonian cycle $C$ on $G[R]$. To be more precise order the vertices of $R$ as $r_1, \dots, r_{|R|}$ in the order they are traversed starting from $r$ along $P$. Form cycle $C$ by taking $C = \{r_1r_2, \dots, r_{|R|-1}r_{|R|}\}$. By the triangle inequality $d(C) \leq d(P) \leq 2d(T^*)$. Further by removing any edge of $C$ we can obtain a spanning tree on $G[R]$, hence $d(\bar{T}) \leq d(C)$.
+Thus we have
+$$d(\bar{T}) \leq d(C) \leq 2d(T^*).$$
+Since computing Minimum Spanning Trees can be done in polynomial time, this completes our result.
+\end{proof}
+\paragraph{}
+To see the analysis is tight consider the graph $K_{n+1}$. Label a vertex $v$ and set $d(v,w) = 1$ for all $w \in V\backslash\{v\}$. Set $d(w,u) = 2$ for all $u,w \in V\backslash\{v\}$. It is not hard to verify this is a metric graph. Set $R = V\backslash\{v\}$. Then a minimum spanning tree on $G[R]$ has cost $2(n-1)$ while an optimal solution to (ST) has cost $n$. Hence the approximation ratio $\alpha$ is
+$$\alpha = \frac{2(n-1)}{2n} = 2 - \frac{1}{n}.$$
+QUESTION: Why is this a ``tight&quot; example?
+\paragraph{}
+For several optimization problems, optimizing on $G$ or $G^M$ is equivalent.
+\paragraph{}
+A {\it tree metric} $(V,d^T)$ is a metric that arises from a weighted tree $T$. Many optimization problems are easy on trees. For example minimum Steiner Tree is very easy, taking only the nodes needed to connect the terminals. So then, given a generic metric $(V,d)$ can we find a tree metric $(V,d^T)$ such that
+$$d(u,v) \leq d^T(u,v) \leq \alpha d(u,v)$$
+for any $u,v \in V$ for some small {\it distortion factor} $\alpha$?
+\paragraph{}
+Some bad news: For a metric arising from an $n$-cycle (simplest imaginable example), any tree-metric must have distortion $\Omega(n)$. This is easy to see for spanning tree distance (any removed edge has their distance increase from $1$ to $n-1$ in unit-weighted case), but the observation holds in general. So then, what if we take a spanning tree randomly? In other words, do the following:
+\begin{enumerate}
+\item Take uniformly at random one edge from the cycle
+\item Output tree $T$ obtained by deleting chosen edge.
+\end{enumerate}
+We will now attempt to bound $E[d^T(u,v)]$. Let $u,v \in V$ and assume $d(u,v) = k$. Then (consider $k$ out of $n$ edges break shortest path, $n-k$ don't)
+$$E[d^T(u,v)] = \frac{k}{n}(n-k) + (1-\frac{k}{n})k \leq 2k$$
+and our expected distortion factor is thus $\alpha = 2$.
+\begin{theorem}
+Given any metric $(V,d)$ one can randomly find a tree $T$ such that
+\begin{enumerate}
+\item $d(u,v) \leq d^T(u,v)$ for all $u,v\in V$
+\item $E[d^T(u,v)] \leq O(\log n) d(u,v)$ for all $u,v\in V$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+We may assume $\max_{u,v \in V} d(u,v) = 2^\delta$ for some $\delta \in \N$ and $d(u,v) &gt; 1$ for all $u,v\in V$. Let $\cA$ be the algorithm given by
+\begin{enumerate}
+\item Choose randomly a permutation $\pi$ of $V$.
+\item Choose $\beta \in [0,1]$ uniformly at random.
+\item Set $D_\delta = \{V\}$.
+\item For $i = \delta -1$ to $0$ do:
+\begin{enumerate}
+\item Assign every node to the first node according to $\pi$ that has distance at most $2^\beta \cdot 2^{i-1}$.
+\item All nodes assigned to the same node that are currently in the same cluster will form a new cluster in $D_i$.
+\end{enumerate}
+\item Return tree $T$ where $V(T) = \{s \in D_i : \forall i = 0, \dots, \delta\}$ and $E(T) = \{s_is_{i-1}  \in D_{i}\times D_{i-1}: s_{i-1} \subseteq s_i, \forall i = 0,\dots,\delta\}$, and $d(s_is_{i-1}) = 2^i$.
+\end{enumerate}
+We complete the proof in the next lecture.
+\end{proof}
+\end{document}
+
+```</pre>
+</div>
+<div created="20170117214450796" modified="20170117214517155" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 4">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77Smw2SVlwd0tRcWs
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-01-17}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 4} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+Recall from Lecture $3$:
+\begin{theorem}
+Given any metric $(V,d)$ one can randomly find a tree $T$ such that
+\begin{enumerate}
+\item $d(u,v) \leq d^T(u,v)$ for all $u,v\in V$
+\item $E[d^T(u,v)] \leq O(\log n) d(u,v)$ for all $u,v\in V$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+We may assume $\max_{u,v \in V} d(u,v) = 2^\delta$ for some $\delta \in \N$ and $d(u,v) &gt; 1$ for all $u,v\in V$. Construct a tree $T$ by:
+\begin{enumerate}
+\item Choose randomly a permutation $\pi$ of $V$.
+\item Choose $\beta \in [0,1]$ uniformly at random.
+\item Set $D_\delta = \{V\}$.
+\item For $i = \delta -1$ to $0$ do:
+\begin{enumerate}
+\item Assign every node to the first node according to $\pi$ that has distance at most $2^\beta \cdot 2^{i-1}$.
+\item All nodes assigned to the same node that are currently in the same cluster will form a new cluster in $D_i$.
+\end{enumerate}
+\item Return tree $T$ where $V(T) = \{s \in D_i : \forall i = 0, \dots, \delta\}$ and $E(T) = \{s_is_{i-1}  \in D_{i}\times D_{i-1}: s_{i-1} \subseteq s_i, \forall i = 0,\dots,\delta\}$, and $d(s_is_{i-1}) = 2^i$.
+\end{enumerate}
+Note that the clusters of $D_0$ are singletons because the bound on the maximum distance is $2^\beta 2^0 \leq 1$. Hence the clusters of $D_0$ can be identified with nodes in $V$. 
+\paragraph{Proof of 1.}
+Suppose $u,v$ are in the same cluster at level $D_i$ and are separated at level $D_{i-1}$. Let $w$ be the node identified with $u$ and $v$'s cluster $S_w$ at level $D_i$. Then $d(u,v) \leq d(u,w) + d(w,v) \leq 2^\beta 2^{i-1} + 2^\beta 2^{i-1} \leq 2^{i+1}$. On the other hand $d^T(u, S_w) \geq 2^i$ and $d^T(S_w, v) \geq 2^i$ so $d^T(u,v) \geq 2^i + 2^i = 2^{i+1}$. This proves part $1.$ of the theorem.
+\paragraph{Proof of 2.}
+Observe that if $u,v$ are separated first at level $D_i$ then $d^T(u,v) \leq 2^{i+2}$. Let $S_i$ be the cluster in $D_i$ containing $u,v$. Let $S^u_{i-1}$ be descended cluster of $S_i$ from which $u$ descends and similarly define $S^v_{i-1}$. Then 
+\begin{align*}
+d^T(u,v) &amp;= d^T(S_i, S^u_{i-1}) + d^T(S_, S^u_{i-1}) + d^T(S^u_{i-1}, u) + d^T(S^v_{i-1}, v)\\
+&amp;= 2^i + 2^i +  d^T(S^u_{i-1}, u) + d^T(S^v_{i-1}, v) \\
+&amp;\leq 2^i + 2^i + 2\sum_{j = 1}^{i-1} 2^j \\
+&amp;= 2^{i+1} + 2^{i+1} \\
+&amp;= 2^{i+2}.
+\end{align*}
+Now we way that node $c$ {\it settles} $(u,v)$ at level $D_i$ if $c$ is the first node with respect to $\pi$ to which one of $u$ or $v$ gets assigned at level $D_i$. We say that node $c$ {\it cuts} $(u,v)$ at level $D_i$ if exactly one of $u,v$ is at distance at most $2^\beta 2^i$ from $c$. If $u,v$ are separated at level $D_i$ then there exists some $c$ which both settles and cuts $u,v$ at level $D_i$.
+\paragraph{}
+Note that $$E[d^T(u,v)] \leq \sum_{i=0}^{\delta - 1} \sum_{c \in V} Pr [ \text{$c$ settles (A) and cuts (B) $u,v$ at $D_i$}] 2^{i+2}.$$ The bound simply follows from our observation, and the prior definitions. Recall that $Pr[A \cap B] = P[A\mid B] Pr[B]$.
+\paragraph{}
+We first analyze $Pr[B]$. Without loss we may assume $d(c,u) \leq d(c,v)$. For $c$ to cut $u,v$ we need $d(c,u) \leq 2^\beta 2^{i-1} &lt; d(c,v)$ by definition. Thus
+$$Pr[B] = \frac{| [2^{i-1},2^i] \cap [d(c,u),d(c,v)]|}{|[2^{i-1},2^i]|} = \frac{| [2^{i-1},2^i] \cap [d(c,u),d(c,v)]|}{2^{i-1}}$$.
+Now we need $Pr[A \mid B]$. Let us order the nodes of $V$ according to their distance to $u,v$. That is, $V = \{c_1, \dots, c_n\}$ where $\min\{d(c_i, v), d(c_i, u)\} \leq \min \{d(c_{i+1}, v), d(c_{i+1}, u)\}$ for all $i$. If $c= c_k$ then the probability that $c$ comes before $c_1, \dots, c_{k-1}$ in $\pi$ is at most $\frac{1}{k}$. In order for $c$ (given that $c$ cuts $u,v$) to settle $u,v$ at least that has to happen. Hence
+$$Pr[A \mid B] \leq \frac{1}{k}.$$
+\paragraph{}
+Putting it all together we obtain the following expectation:
+\begin{align*}
+E[d^T(u,v)] &amp;\leq \sum_{i=0}^{\delta -1} \sum_{k=1}^n Pr [A \mid B]Pr[B] 2^{i+2} \\
+&amp;\leq \sum_{k=1}^n \frac{1}{k} \sum_{i=0}^{\delta -1 }  2^{i+2}\frac{| [2^{i-1},2^i] \cap [d(c,u),d(c,v)]|}{2^{i-1}} \\
+&amp;= 8 \sum_{k=1}^n \frac{1}{k} \sum_{i=0}^{\delta -1 }  | [2^{i-1},2^i] \cap [d(c,u),d(c,v)]| \\
+&amp;\leq 8 d(u,v) \sum_{k=1}^n \frac{1}{k} \\
+&amp;= 8 H_n d(u,v) \\
+&amp;= O(log n) d(u,v).
+\end{align*}
+Thus the second claim and therefore the theorem holds.
+\end{proof}
+\begin{theorem}
+There exists a tree $T' = (V,F)$ such that $d^T(u,v) \leq d^{T'}(u,v) \leq 4 d^T(u,v).$
+\end{theorem}
+\begin{proof}
+Pick $v \in V$ with a parent $w \not \in V$ and contract edge $vw$ in $T$. Repeat until all nodes of $T$ are in $V$. Multiply by $4$ the weights on all remaining edges. Call the resulting tree $T'$. Note that clearly $d^{T'}(u,v) \leq 4d^T(u,v)$ as contracting only shortens the distances. Furthermore, in the worst case $d^{T'}(u,v) = 2^i \cdot 4$ if contraction results in contracting $u$ and $v$ right up to the cluster where they were separated (that is, contracting preserves the largest edge distance on the $uv$-path in $T$). But 
+$$2^i \cdot 4 = 2^i + 2^i + 2^i + 2^i \geq d(S^u_{i-1}, S_i) + d(S^v_{i-1}, S_i) +  d(S^u_{i-1}, u) + d(S^v_{i-1}, v) = d^T(u,v).$$
+Hence the theorem holds.
+\end{proof}
+\section{Generalized Steiner Network}
+\paragraph{}
+Here we seek to given an application of the previous theory. In the Generalized Steiner Network problem (GSN), we are given a graph $G=(V,E)$, a distance function $d: E \rightarrow \R_+$, and requirements $r(u,v) \in \N$ for all $u,v \in V$. We are to find an integer capacity function $x : E \rightarrow \N$ of minimum cost $\sum_{e \in E} d(e) x_e$ such that capacities $x$ allow for routing a flow of value $r(u,v)$ from $u$ to $v$.
+\paragraph{Proposition 1} Optimizing on $G$ is equivalent to optimizing on $G^M$ for $GSN$ problems. This proposition is immediate from the same arguments as was used for ST.
+\paragraph{Proposition 2} GSN is solvable in polynomial time on trees. Since each edge is a cut in the tree, we must set $x_{uv} = r(u,v)$ and this is the best we can do.
+\paragraph{Algorithm} Consider the following simple algorithm for GSN:
+\begin{enumerate}
+\item Find a tree $T$ of $G$ according to previous section's metric embedding algorithms.
+\item Solve GSN on $T$ and return the solution.
+\end{enumerate}
+\begin{theorem}
+Algorithm above is a randomized $O(log n)$-approximation algorithm for GSN.
+\end{theorem}
+\begin{proof}
+Let $\bar{x}$ be the solution return by our algorithm. Let $x^*$ be OPT solution. Then $\sum_{uv} d(u,v) \bar{x}_{uv} \leq \sum_{uv} d^T(u,v)\bar{x}_{uv} \leq \sum_{uv} d^T(u,v) x^*_{uv}$. The first inequality follows since $d(u,v) \leq d^T(u,v)$. The second inequality follows since $x^*$ is a feasible solution for $T$. Taking expectation we see:
+$$E[\sum_{uv} d(u,v) \bar{x}_{uv}] \leq E[\sum_{uv} d^T(u,v)] \leq O(log n) \sum_{uv} d(u,v) x^*_{uv}$$
+with the last inequality following from our theorem.
+\end{proof}
+\end{document}
+
 ```</pre>
 </div>
 <div created="20170109174945143" modified="20170109180104361" tags="[[Curriculum Vitae]]" title="Presentations">
