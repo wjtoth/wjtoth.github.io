@@ -333,6 +333,8 @@ Error message and password prompt
 
 <li>Lecture 4</li>
 
+<li>Lecture 5</li>
+
 <li>Presentations</li>
 
 <li>Publications</li>
@@ -9672,6 +9674,196 @@ with the last inequality following from our theorem.
 \end{proof}
 \end{document}
 
+```</pre>
+</div>
+<div created="20170123203348978" modified="20170123203420512" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 5">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77cFpnWERVVTE2TEE
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-01-19}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 5} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+\paragraph{}
+Before moving on to the next topic, we just want to mention an important theorem that results from the theory built in the previous lectures. It tells us that we can have deterministic approximation algorithms that give just as good bounds as the randomized ones studied previously.
+\begin{theorem}
+Let $G=(V,E)$ be a graph. Let $d: E \rightarrow \R_+$ be a metric function. Let $\lambda^*_{uv} \geq 0$ be coefficients for all $(u,v) \in V\times V$. There exists a polynomial time algorithm which constructs a weighted tree $T=(V,E)$ such that $d^T(u,v) \geq d(u,v)$ for all $u,v\in V$ and $$\sum_{u,v} \lambda^*_{uv}d^T(u,v) \leq O(\log n) \sum_{u.v} \lambda^*_{uv} d(u,v).$$
+\end{theorem}
+\begin{proof}
+Omitted. May be in a talk at the end of course via some students project. Involves derandomization via the method of conditional expectation.
+\end{proof}
+\section{Primal - Dual Methods}
+\paragraph{}
+Primal-Dual methods are a common paradigm in algorithm design. We will begin by showing how they are used to given exact algorithms, and then explain relaxed complementary slackness which allows us to extend the paradigm to give approximation algorithms.
+\paragraph{}
+Consider the {\it Arborescence Problem} (ARB). In this problem we are given a directed graph $D= (V,E)$, cost function $c: E \rightarrow \R_+$, and a root vertex $r \in V$. We are to find an arborescence $T$ rooted at $r$ which spans $V$ and minimizes $\sum_{e\in E(T)} c_e$.
+\paragraph{}
+As the name of this method might suggest we will used integrally the linear programming relaxation of this problem:
+\begin{align*}
+\min \sum_{e \in E} c_e x_e  &amp;\ \\
+\text{s.t.} \sum_{e \in \delta^+(S)} x_e &amp;\geq 1 &amp;\forall S \subseteq V\backslash\{r\} \\
+x_e &amp;\geq 0 &amp;\forall e \in E,
+\end{align*}
+and its dual program:
+\begin{align*}
+\max \sum_{S \subseteq V\backslash\{r\}} y_S &amp;\ \\
+\text{s.t.} \sum_{S : e \in \delta^+(S)} y_S &amp;\leq c_e &amp;\forall e \in E \\
+y_S &amp;\geq 0 &amp;\forall S \subseteq V\backslash \{r\}.
+\end{align*}
+Here $\delta^+(S) = \{(u,v) \in E : u \in S, v\not\in S\}$ denotes set of arcs outgoing from $S$.
+\paragraph{}
+Our primal-dual algorithm for (ARB) operates as follows (start by setting $x=0$, $y=0$, for implementation track only non-negative $y$ to avoid exponential runtime): 
+\begin{enumerate}
+\item While $x$ is not feasible for the primal:
+	\begin{enumerate}
+	\item Increase $y_S$ uniformly for all ``strongly connected components&quot; (with respect to $x$) $S$ where $x(\delta^+(S)) = 0$ until some constraints for an edge $e$ becomes tight.
+	\item Set $x_e=1$ for tight edge $e$ in previous step.
+	\end{enumerate}
+\item Deletion Step: Consider each edge $e$ where $x_e = 1$ in reverse order from the order they were set to $1$ and set $x_e = 0$ as long as this does not cause the resulting $x$ to become infeasible.
+\item Return $x$.
+\end{enumerate}
+\begin{theorem}
+The previous algorithm is an exact polynomial time algorithm for (ARB).
+\end{theorem}
+\begin{proof}
+When the algorithm terminates we have that if $x_e &gt; 0$ then $x_e = 1$  and so the dual constraint is tight, that is:
+$$\sum_{S : e\in\delta^+(S)} y_S = c_e.$$
+This is immediate from our construction of $x$. Hence the primal complementary slackness conditions hold.
+\paragraph{}
+For the dual complementary slackness conditions, suppose there exists $S$ such that $y_S &gt; 0$, yet $\sum_{e\in \delta^+(S)} x_e \geq 2$. Let $e, \bar{e} \in \delta^+(S)$ and suppose without loss of generality that $\bar{e}$ was added before $e$ by the algorithm. Since we did not delete $e$, there exists a node $v \in S$ that uses $e$ to reach $r$. But since $S$ is strongly connected, no nodes in $S$ need $\bar{e}$ to reach $r$ (they can go $v$ then eventually through $e$), so we could have deleted $\bar{e}$ in the Deletion Step. A contradiction.
+\end{proof}
+\paragraph{}
+To extend this method to one which yields approximation algorithms, we need to be able to relax our complementary slackness conditions. In (ARB) our relaxed complementary slackness conditions are:  $x$ (with corresponding dual solution $y$) is an $\alpha \beta$-approximate solution if and only if
+\begin{enumerate}
+\item If $x_e &gt; 0$ then $\sum_{S: e \in \delta^+(S)} y_S \geq \frac{1}{\alpha} c_e$.
+\item If $y_S &gt; 0$ then $\sum_{e\in \delta^+(S)} x_e \leq \beta \cdot 1$.
+\end{enumerate}
+To see it observe that
+$$\sum_{e} c_e x_e \leq \sum_e x_e(\alpha \sum_{S: e \in \delta^+(S)} y_S) = \alpha \sum_{e}x_e(\sum_{S: e \in \delta^+(S)} y_S) \leq \alpha \beta \sum_S y_S.$$
+\subsection{Primal-Dual Algorithm for General Network Design Problems}
+\paragraph{}
+In a {\it general network design problem} (GND) we are given a graph $G = (V,E)$, a cost function $c : E \rightarrow \R_+$, and a function $f: 2^S \rightarrow \R_+$. We are to solve the integer program:
+\begin{align*}
+min \sum_{e \in E} c_e x_e  &amp;\ \\
+\text{s.t.} \sum_{e \in \delta(S)} x_e &amp;\geq f(S) &amp;\forall S \subseteq V\\
+x_e &amp;\geq 0 &amp;\forall e \in E \\
+x \in \Z^E.
+\end{align*}
+This problem's linear programming relaxation is:
+\begin{align*}
+min \sum_{e \in E} c_e x_e  &amp;\ \\
+\text{s.t.} \sum_{e \in \delta(S)} x_e &amp;\geq f(S) &amp;\forall S \subseteq V \\
+x_e &amp;\geq 0 &amp;\forall e \in E 
+\end{align*}
+with corresponding dual program:
+\begin{align*}
+\max \sum_{S} f(S)y_S &amp;\ \\
+\text{s.t.} \sum_{S : e \in \delta(S)} y_S &amp;\leq c_e &amp;\forall e \in E \\
+y_S &amp;\geq 0 &amp;\forall S \subseteq V.
+\end{align*}
+We will focus our attention on the special case where $f$ is a $01$-proper function. A function $f$ is called {\it proper} if it satisfies:
+\begin{enumerate}
+\item $f(V) = 0$
+\item $f(S) = f(V\backslash S)$, $\forall S\subseteq V$ (Symmetry property)
+\item If $A \cap B = \emptyset$ then $f(A \cup B) \leq \max \{f(A), f(B)\}$ (Maximality property).
+\end{enumerate}
+Our algorithm for (GSN) where $f$ is $01$-proper is as follows:
+\begin{enumerate}
+\item Start with ($x=0,y=0$) and $F = \emptyset$.
+\item While $F$ is not feasible:
+	\begin{enumerate}
+	\item Increase $y_S$ uniformly for &quot;minimal violated cuts&quot; (with respect to $F$) until a constraint corresponding to some edge $e$ becomes tight in the dual program.
+	\item For such $e$ set $x_e = 1$ and $F = F \cup \{e\}$.
+	\end{enumerate}
+\item Deletion Step: Consider all edges in $F$ in reverse order they were added in Step $2$. If $F\backslash\{e\}$ is feasible then set $F = F\backslash\{e\}$ and set $x_e = 0$.
+\item Return $F$.
+\end{enumerate}
+\begin{lemma}
+Let $f$ be a $01$ function satisfying the Maximality property. Then
+\begin{enumerate}
+\item $F \subseteq E$ is feasible if and only if every connected component $C$ of $(V,F)$ satisfies $f(C) = 0$.
+\item The minimal violated sets (cuts) are connected components $C$ that have $f(C) = 1$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Let $S$ be a minimal violated set with $f(S) = 1$. If $(V,S)$ contains some connected component $A$ and $S\backslash A := B$ is not empty then by Maximality either $f(A) = 1$ or $f(B) = 1$. But then either $A$ or $B$ contradicts the minimality of $S$. Hence $S$ is a connected component and the lemma follows.
+\end{proof}
+\begin{theorem}
+Our algorithm above is a $2$-approximation algorithm for (GND) when $f$ is a $01$-proper function.
+\end{theorem}
+\begin{proof}
+To follow in next lecture.
+\end{proof}
+\end{document}
 ```</pre>
 </div>
 <div created="20170109174945143" modified="20170109180104361" tags="[[Curriculum Vitae]]" title="Presentations">
