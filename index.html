@@ -335,6 +335,8 @@ Error message and password prompt
 
 <li>Lecture 5</li>
 
+<li>Lecture 6</li>
+
 <li>Presentations</li>
 
 <li>Publications</li>
@@ -9864,6 +9866,149 @@ Our algorithm above is a $2$-approximation algorithm for (GND) when $f$ is a $01
 To follow in next lecture.
 \end{proof}
 \end{document}
+```</pre>
+</div>
+<div created="20170124214741565" modified="20170124214759507" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 6">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77WlRaZmZ2VkFLWUE
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-01-24}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 6} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+\section{Generalization}
+\paragraph{}
+A function $f: 2^V \rightarrow \{0,1\}$ is called {\it uncrossable} if
+\begin{enumerate}
+\item $f(V) = 0$
+\item If $f(A) = f(B) = 1$ for some $A,B \subseteq V$, then either
+\begin{itemize}
+\item$f(A\cup B) = f(A \cap B) = 1$
+\item or $f(A\backslash B) = f(B\backslash A) = 1$.
+\end{itemize}
+\end{enumerate}
+Observe that if $f$ is $01$-proper then $f$ is uncrossable (this is left as an exercise).
+\begin{theorem}
+The Primal-Dual algorithm of the previous lecture is a $2$-approximation algorithm for uncrossable functions provided that you have a polynomial time oracle to find minimum violated sets.
+\end{theorem}
+\begin{proof}
+Omitted.
+\end{proof}
+\section{General Proper Functions}
+\paragraph{}
+We now consider a proper function $f : 2^V \rightarrow \N$. Consider the following IP for proper function $f$:
+\begin{align*}
+\min &amp;\sum_e c_e x_e \\
+\text{s.t.} \sum_{e\in \delta(S)} x_e &amp;\geq f(S) &amp;\forall S \subseteq V \\
+1 \geq &amp;x_e \geq 0 &amp;\forall e \in E \\
+x \in \Z^E.
+\end{align*}
+Our goal is to design a primal-dual approximation algorithm for solving this IP with approximation factor $O(\log f_{max})$ where $f_{max}$ is $\max_S\{f(S)\}$. Note that there exists a $2$-approximation algorithm for this IP using iterative rounding (to be seen in later lectures). It is an open problem to design a $2$-approximation algorithm for this IP using primal-dual methods.
+\paragraph{}
+Consider the following Primal-Dual Algorithm:
+\begin{enumerate}
+\item $F_0 = \emptyset$
+\item For phase $p = 1, \dots, f_{max}$
+	\begin{enumerate}
+	\item Set $h_p(S) = 1$ if $f(S) - |\delta_{F_{p-1}(S)}| = f_{max} - p + 1$, and set $h_p(S) = 0$ otherwise.
+	\item Set $E_p = E - F_{p-1}$
+	\item Apply $2$-approximation algorithm using primal-dual for $(V,E_p)$ with function $h_p$, and let $A$ be the edges returned by the algorithm.
+	\item Set $F_p = F_{p-1} \cup A$.
+	\end{enumerate}
+\item Return $F_{f_{max}}$.
+\end{enumerate}
+\begin{lemma}
+For all iterations $p$, the function $h_p$ is uncrossable.
+\end{lemma}
+\begin{proof}
+(Exercise).
+\end{proof}
+\begin{theorem}
+The primal-dual algorithm given above is an $O(\log f_{max})$-approximation algorithm provided that you have a $2$-approximation primal-dual algorithm for $h_p$.
+\end{theorem}
+\begin{proof}
+Let $y^p$ be the dual solution constructed in each iteration $p$. Set $z_e^p = 0$ for all $e \in E_p$. Set $z_e^p = \sum_{S: e\in \delta(S)} y_S^p$ otherwise. Then $(y^p, z^p)$ is dual feasible for the original problem. We compute the bound on its optimal value $D^*$:
+\begin{align*}
+D^* &amp;\geq \sum_S f(S) y_S^p - \sum_{e\in E} z_e^p\\
+&amp; = \sum_S f(S) y_S^p - \sum_{e\not\in E_p}\sum_{S : e\in\delta(S)}y_S^p\\
+&amp;= \sum_S f(S) y_S^p - \sum_S |\delta_{F_{p-1}}(S)| y_S \\
+&amp;= \sum_S (f(S) - |\delta_{F_{p-1}}(S)|)y_S^p \\
+&amp;= (f_{max} - p + 1)\sum_S y_S^p.
+\end{align*}
+This implies that
+$$\sum_{e \in F_{max}^p} c_e \leq 2 \sum_{p=1}^{f_{max}} y_S^p \leq 2 \sum_{p=1}^{f_{max}} \frac{D^*}{f_{max} - p + 1} = O(\log f_{max}) D^* .$$
+\end{proof}
+\end{document}
+
 ```</pre>
 </div>
 <div created="20170109174945143" modified="20170109180104361" tags="[[Curriculum Vitae]]" title="Presentations">
