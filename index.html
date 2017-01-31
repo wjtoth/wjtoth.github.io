@@ -337,6 +337,10 @@ Error message and password prompt
 
 <li>Lecture 6</li>
 
+<li>Lecture 7</li>
+
+<li>Lecture 8</li>
+
 <li>Presentations</li>
 
 <li>Publications</li>
@@ -10008,6 +10012,333 @@ D^* &amp;\geq \sum_S f(S) y_S^p - \sum_{e\in E} z_e^p\\
 \end{align*}
 This implies that
 $$\sum_{e \in F_{max}^p} c_e \leq 2 \sum_{p=1}^{f_{max}} y_S^p \leq 2 \sum_{p=1}^{f_{max}} \frac{D^*}{f_{max} - p + 1} = O(\log f_{max}) D^* .$$
+\end{proof}
+\end{document}
+
+```</pre>
+</div>
+<div created="20170131221147706" modified="20170131221212926" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 7">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77OGpPQmhjSGxOc00
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-01-26}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture n} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+\section*{Integrality Gap}
+\paragraph{}
+Let $P$ be an optimization problem, and suppose that there exists an integer programming formulation for $P$. Denote by $OPT(I)$ the objective function value of an optimal solution to an instance $I$ of $P$. Denote by $OPT_f(I)$ the objective function value of the Linear Programming relaxation of the IP formulation of $I$.
+\paragraph{}
+The integrality gap of the formulation is
+$$\inf_{I \in P} \frac{OPT(I)}{OPT_f(I)}$$
+for maximization problems, and
+$$\sup_{I \in P} \frac{OPT(I)}{OPT_f(I)}$$
+for minimization problems.
+\section{Iterative Rounding}
+\paragraph{}  Recall the linear programming formulation $LP$ for Generalized Steiner Network (GSN):
+\begin{align*}
+\min &amp;\sum_e c_e x_e \\
+\text{s.t.} x(\delta(S)) &amp;\geq f(S) &amp;\forall S \subseteq V\\
+x&amp;\geq 0
+\end{align*}
+where $f(S) = \max_{u \in S, v \not\in S} r(u,v).$
+\paragraph{}
+A function $f: 2^V \rightarrow \Z$ is called weakly-supermodular (wsm) if
+\begin{enumerate}
+\item $f(V) = 0$ and
+\item For all $A,B \subseteq V$ at least one of the following holds
+\begin{enumerate}
+\item $f(A) + f(B) \leq f(A\backslash B) + f(B \backslash A)$ or
+\item $f(A) + f(B) \leq f(A\cup B) + f(A\cap B).$
+\end{enumerate}
+\end{enumerate}
+\begin{proposition}
+If $f$ is a proper function then $f$ is wsm.
+\end{proposition}
+\paragraph{}
+Recall that an extreme point solution (xps) to an LP is a feasible solution which cannot be written as a convex combination of other feasible solutions.
+\begin{proposition}
+An optimal xps of $LP$ for GSN can be computed in polynomial time.
+\end{proposition}
+\begin{theorem}
+For any wsm function $f$, any xps to $LP$ satisfies $x_e \geq \frac{1}{2}$ for at least one $e \in E$.
+\end{theorem}
+\paragraph{}
+The previous theorem yields a natural algorithm for GSN:
+\begin{enumerate}
+\item Set $H= \emptyset$, and $f' = f$.
+\item While $f' \neq 0$
+\begin{enumerate}
+\item Find an optimal xps for $LP$ with $f'$
+\item For all $e$ such that $x_e \geq \frac{1}{2}$, include $\ceil{x_e}$ copies of $e$ in $H$
+\item Update $f'$: for all $S\subseteq V$, set $f(S) = \max \{f(S)-|\delta_H(S)|, 0\}$.
+\end{enumerate}
+\item Output $H$.
+\end{enumerate}
+\begin{lemma}
+Let $H$ be a (multi)subgraph of $G$. If $f: 2^V \rightarrow \Z_+$ is wsm then $f'(S) = \max \{ f(S) - |\delta_H(S)|, 0\}$ is wsm.
+\end{lemma}
+\begin{lemma}
+We can solve the $LP$ relaxation for GSN in polynomial time at any iteration of the algorithm for instances of GSN.
+\end{lemma}
+\begin{theorem}
+The solution $H$ output by the algorithm has cost at most $2$ times the cost of the optimal solution to the $LP$ relaxation.
+\end{theorem}
+\begin{proof}
+Proceed by induction on the number of iterations. If the algorithm only requires one iteration then the result is immediate. Otherwise let $x$ be an optimal xps in the first iteration. Let $\hat{x}$ be defined as
+$$ \hat{x}_e = \begin{cases} 1, &amp;\forall e, x_e \geq \frac{1}{2} \\
+0, &amp;\text{otherwise}\end{cases}$$
+Let $H^1$ be the set of edges taken in the first iteration. Then $c(H^1) \leq 2c(\hat{x})$. Let $f'$ be the requirement function after the first iteration and let $H'$ be the set of edges picked by the algorithm in all subsequent iterations. 
+\paragraph{}
+The key observation: $(x-\hat{x})$ is a feasible solution for $f'$. So by induction $c(H') \leq 2c(x-\hat{x})$. In total
+$$c(H^1 \cup H') \leq 2c(\hat{x}) + 2c(x-\hat{x}) \leq 2c(x).$$
+\end{proof}
+\paragraph{}
+An xps $x$ of $LP$ satisfies $m = |E|$ linearly independent inequalities with equality (tight). In our analysis to follow we will make the simplifying assumption that $x_e &gt; 0$ for all $e\in E$. We may assume this by removing all $e$ such that $x_e = 0$. For a set $S$ we will denote by $\chi(S)$ the incidence vector of $S$.
+\paragraph{}
+A collection $\cL$ of subsets of $V$ is a \textit{laminar} family if no two sets in this collection ``crosses&quot;. By crosses we mean for all $A, B \in \cL$, we have $A\cap B \neq \emptyset$ and either $A\backslash B \neq \emptyset$ or $B\backslash A \neq \emptyset$.
+\begin{theorem}
+For any xps $x$ to $LP$ there is a collection of $m$ tight sets such that their incidence vectors are linearly independent, and the collection is a laminar family.
+\end{theorem}
+\begin{proof}
+To follow in next lecture.
+\end{proof}
+\end{document}
+```</pre>
+</div>
+<div created="20170131221223375" modified="20170131221332910" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 8">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77bmlRYzJHVVlzMHM
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-01-31}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 8} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+\paragraph{}
+This lecture is a continuation of the previous lecture. We are proving the following theorem:
+\begin{theorem}
+For any xps $x$ to $LP$ there is a collection of $m$ tight sets such that their incidence vectors are linearly independent, and the collection is a laminar family.
+\end{theorem}
+\begin{proof}
+Let $\cL$ be a laminar family of tight sets whose incidence vectors are linearly independent. We will prove through the following lemmas that if $span(\cL) \in \R^m$ then there exists a tight set we can add to $\cL$, and if this set violates laminarity then we can ``uncross&quot; and recover a larger laminar set than $\cL$ as desired.
+\end{proof}
+\begin{lemma}
+Let $A$ and $B$ be two crossing tight sets. The one of the following holds:
+\begin{enumerate}
+\item $A\backslash B$ and $B \backslash A$ are both tight and $\chi(A) + \chi(B) = \chi(A\backslash B) + \chi(B\backslash A)$.
+\item $A\cup B$ and $A\cap B$ are both tight and $\chi(A) + \chi(B) = \chi(A\cup B) + \chi(B\cap A)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The proof follows by case distinction on $f$. Since $f$ is weakly supermodular (wsm) either:
+\begin{enumerate}
+\item $f(A) + f(B) \leq f(A\backslash B) + f(B\backslash A)$ or
+\item $f(A) + f(B) \leq f(A\cup B) + f(A \cap B)$.
+\end{enumerate}
+We will prove the first case, and the second case follows similarly.
+\paragraph{}
+Since $A$ and $B$ are tight
+$$x(\delta(A)) + x(\delta(B)) = f(A) + f(B).$$
+By feasibility
+$$x(\delta(A\backslash B)) + x(\delta(B\backslash A)) \geq f(A\backslash B) + f(B\backslash A).$$
+However $\delta(A) \cup \delta(B) \supseteq \delta(A\backslash B) + \delta(B \backslash A)$, so
+$$x(delta(A)) + x(\delta(B)) \geq x(\delta(A\backslash B)) + x(\delta(B\backslash A).$$
+Combining inequalities we see
+$$f(A\backslash B) + f(B\backslash A) \leq x(\delta(A\backslash B)) + x(\delta(B\backslash A) \leq f(A\backslash B) + f(B\backslash A) $$
+Hence $A\backslash B$ and $B \backslash A$ are tight.
+\paragraph{}
+Further by our chain of inequalities holding as equality we have
+$$x(delta(A)) + x(\delta(B)) = x(\delta(A\backslash B)) + x(\delta(B\backslash A)$$
+and since all $e$ have $x_e &gt; 0$, we know that there are no edges from $A\cap B$ to $V\backslash (A\cup B)$, otherwise the above equality would be violated. Hence
+$$\chi(A) + \chi(B) = \chi(A\backslash B) + \chi(B\backslash A).$$
+\end{proof}
+\paragraph{}
+For a set $S \subseteq V$ we define the $\textit{crossing number}$ of $S$ with respect to $\cL$ to be the number of sets in $\cL$ that cross with $S$.
+\begin{lemma}
+Let $S$ be a tight set crossing with $T \in \cL$. Then each of the sets $S\backslash T$, $T\backslash S$. $S\cup T$, and $S\cap T$ have a crossing number smaller than that of $S$.
+\end{lemma}
+\begin{proof}
+Let $T'$ be any set in $\cL$ crossing with any of the four sets. One checks that $T'$ crosses $S$ too. This implies that each of those four sets do not cross with $T$.
+\end{proof}
+\begin{lemma}
+Let $S$ be a tight set such that $\chi(S)\not\in span(\cL)$, and $S$ crosses with some set in $\cL$. Then there is a tight set $S'$ that has a smaller crossing number than $S$ and $\chi(S')\not\in span(\cL)$.
+\end{lemma}
+\begin{proof}
+We again proceed by cases on $f$ and only prove the first one, with the second following similarly.
+\begin{enumerate}
+\item $f(A) + f(B) \leq f(A\backslash B) + f(B\backslash A)$ or
+\item $f(A) + f(B) \leq f(A\cup B) + f(A \cap B)$.
+\end{enumerate}
+\paragraph{}
+By prior lemmas $S\backslash T$ and $T\backslash S$ have smaller crossing numbers than $S$, and further $S\backslash T$ and $T\backslash S$ are tight with
+$$\chi(S) + \chi(T) = \chi(S\backslash T) + \chi(T\backslash S).$$
+Hence one of  $\chi(T\backslash S)$ or $\chi(S\backslash T)$ are not in $span(\cL)$, as otherwise $\chi(S) \in span(\cL)$.
+\end{proof}
+\paragraph{}
+Together these lemmas yield the theorem. Now with this theorem in hand we are ready to prove final unproven result from the previous lecture:
+\begin{theorem}
+For any wsm function $f$, any xps to $LP$ satisfies $x_e \geq \frac{1}{2}$ for at least one $e \in E$.
+\end{theorem}
+\begin{proof}
+We have $m =|E|$ with $x_e &gt;0$ for all $e\in E$, and $m = |\cL|$. Suppose for a contradiction that $x_e \leq \frac{1}{2}$ for all $e \in E$. We proceed by a token argument.
+\paragraph{}
+Assign $1$ token to every $e \in E$. For each $uv \in E$ distribute $x_{uv}$ units to each of $u$ and $v$, and distribute $1-2x_{uv}$ units to $uv$. Now reassign these values to sets in $\cL$ as follows. Let $S \in \cL$ and let $S_1,\dots, S_n \in \cL$ be $S$'s children. Ie sets strictly contained in $S$:
+\begin{itemize}
+\item if $v \in S\backslash \cup_i S_i$ give $S$ the value held by $v$.
+\item if $uv \in E(S) \backslash \cup_i E(S_i)$ give $S$ the value held by $uv$.
+\end{itemize}
+Our goal is to show that after this process $S$ gets value at least one. We need some definitions:
+\begin{itemize}
+\item Let $C_0$ be set of edges with both endpoints in $S\backslash \cup_i S_i$.
+\item Let $C_1$ be the set of edges with one endpoint in $S$ and one in $V\backslash S$.
+\item Let $C_2$ be the set of edges with one endpoint in $S\backslash \cup_i S_i$ and one endpoint in some $S_i$.
+\item Let $C_3$ be the set of edges with one endpoint in some $S_i$ and the other in some $S_j$ for $i\neq j$.
+\end{itemize}
+Observe that if $C_0 \neq \emptyset$ then $S$ trivially obtains value at least one. So suppose that $C_0 = \emptyset$. Now each $S$ gets value
+$$z_S \geq \sum_{e\in C_1} x_e + \sum_{e \in C_2}(x_e + (1-2x_e)) + \sum_{e \in C_3} (1-2x_e) = x(C_1) + |C_2| -x(C_2) + |C_3| - 2x(C_3).$$
+Note that since each $x_e \leq \frac{1}{2}$ this value $z_S &gt; 0$ unless $C_1 = C_2 = C_3 = \emptyset$ which cannot happen as this would imply that $\chi(S) = \sum_i \chi(S_i)$ which contradicts linear independence.
+\paragraph{}
+To complete the proof we need only demonstrate that $z_S$ is integral. To see this observe by tightness of the sets in $\cL$ that
+$$x(C_1) -x(C_2) -2(C_3) = x(\delta(S)) - \sum_i x(\delta(S_i)) = f(S) - \sum_i f(S_i)$$
+and since $f$ is integer valued the result holds. Therefore $z_S \geq 1$ for all $S$. Now observe that no set in $\cL$ will receive value from $uv \in \delta(S)$ where $S\in \cL$ is maximal with respect to $\cL$. This implies $|E| &gt; m$ a contradiction.
 \end{proof}
 \end{document}
 
