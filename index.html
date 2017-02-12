@@ -327,6 +327,10 @@ Error message and password prompt
 
 <li>Lecture 1</li>
 
+<li>Lecture 10</li>
+
+<li>Lecture 11</li>
+
 <li>Lecture 2</li>
 
 <li>Lecture 3</li>
@@ -9176,6 +9180,285 @@ $$x_u + x_v \geq 1$$
 and thus either $u \in C$ or $v \in C$.
 \end{proof}
 \end{document}
+```</pre>
+</div>
+<div created="20170212175511967" modified="20170212175630323" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 10">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77R19GX09FV1Rva00
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-02-07}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 10} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+\paragraph{}
+We focus on the proof of the result that there exists a $1.39$ approximation algorithm for Steiner Tree.
+Recall that $$\sum_t E(c(C^t)] \leq \sum_{t} E[\sum_j \frac{x_j^t}{M} c(C_j)] \leq \frac{1}{M} \sum_t E[opt^t_{k,f}] \leq \frac{1}{M} \sum_t E[opt^t_k].$$
+Let $S^*$ be the optimal $k$-restricted Steiner Tree. Each time we sample $C^t$ we delete a subset of edges of $S^*$. Let $S^* = S^0 \supseteq S^1 \supseteq S^2 \supseteq \dots$ be the subgraphs obtained in this manner. We will show:
+\begin{enumerate}
+\item $S^t$ plus the sampled components until iteration $t$ span the terminals.
+\item Each edge in $S^*$ is deleted after an (expected) number of at most $\ln (4) \cdot M$ iterations.
+\end{enumerate}
+$(1) + (2)$ implies the existence of a $\ln(4)$-approximation algorithm for $k$-restricted Steiner Tree.
+\paragraph{Proof of $(1)$}
+We begin with demonstrating $(1)$. How do we delete edges from $S^*$? By the following random process:
+\begin{enumerate}
+\item Convert $S^*$ to a binary tree by adding $0$-cost edges if necessary. Note that the height of the tree is at most $|R|-1$ at this stage/
+\item For $u,v \in R$ let $P_{uv}$ denote the unique $uv$-path on $S^*$.
+\item For each Steiner node, choose uniformly at random one of the two edges going to its children. Call the set of all such edges $\tilde{B}$.
+\item Clearly $Pr[e \in \tilde{B}] = \frac{1}{2}$ for all $e \in S^*$.
+\item Set $W = \{ uv \in {R\choose 2} : |P_{uv} \cap \tilde{B}| = 1\}$.
+\item For each $e \in S^*$, let $W(e) = \{uv \in W: e \in P_{uv}\}$.
+\item For a given component $C$ we let the set of candidate bridges be $\cB(C) = \{B \subseteq W: |B| = |R(C)| - 1, (W\backslash B) \cup C \text{ is connected} \}$.
+\end{enumerate}
+\paragraph{Deletion Process}
+Let $C^t$ be the component sampled in iteration $t$. Delete from $W$ a random subset $\bar{B_{r_w}}(C^t) \in \cB_w (C^t)$ according to a probability distribution: $\omega_{C^t} : \cB_w (C^t) \rightarrow [0,1].$ Delete $e \in S^*$ as soon as all edges in $W(e)$ are deleted.
+\paragraph{Lemma 1}
+The graph $S^t \cup \bigcup_{t' = 1} ^t C^{t'}$ spans $R$.
+\paragraph{Proof of Lemma 1}
+Let $W^t \subseteq W$ be the set of edges of $W$ that are not deleted at iteration $t$. By the definition of $\cB_w$, $W^t \cup \bigcup_{t' = 1} ^t C^{t'}$ spans $R$. For all $e = uv \in W^t$, $P_{uv} \in W(e)$, all edges in $P_{uv}$ are not deleted. Thus $uv$ are connected in $S^t$. $\blacksquare$.
+\paragraph{Proof of $(2)$}
+We now consider part $(2)$. We need the following lemma.
+\paragraph{Lemma $2$}
+There exist probability distributions $\omega_c: \cB_w(C) \rightarrow [0,1]$ such that, in each iteration $t$, $e \in W$ gets deleted with probability at least $\frac{1}{M}$.
+\paragraph{Proof of Lemma $2$}
+We claim that there exists $\omega_c$ such that
+\begin{equation}\label{eq:star}\sum_C \sum_{B \in \cB(C) : e\in B} x_C \cdot \omega_C (B) \geq 1\end{equation}
+for all $e \in W$. If equation \ref{eq:star} holds, then $Pr[e \in \bar{B_{r_w}} (C^t)] = \sum_{C} \sum_{B\in \cB_w(C) : e \in B} \frac{x_C}{M} \cdot \omega_C(B) \geq \frac{1}{M}$ as desired. If equation \ref{eq:star} does not hold then the following linear program has no solution:
+\begin{align*}
+\sum_{C}\sum{B \in \cB_w(C): e\in B}x_C \cdot \omega_C(B) &amp;\geq 1, &amp;\forall e \in E\\
+\sum_{B \in \cB(C)} \omega_C(B) &amp;\leq 1 &amp;\forall C \\
+\omega_C(B) \geq 0.
+\end{align*}
+By Farkas Lemma, the following system has a solution:
+\begin{align*}
+y_C &amp;\geq \sum_{e \in B} c_e x_C &amp;\forall C, \forall B \in \cB_W(C) \\
+\sum_C y_C &amp;&lt; \sum_{e \in W} c_e\\
+(y,c) &amp;\geq 0.
+\end{align*}
+Let us interpret the values of $c$ variables as edge costs. Then $y_C \geq x_C \sum_{e \in B} c_e$ for all $B$. So $y_C \geq x_C \cdot \max\{c(B) : B \in \cB_W(C)\} = x_C \cdot c(\cB_{r_w}(C))$ (bridges with $c$ as cost function). Then $\sum_C x_C\cdot \text{cost}(\cB_{r_w}(C)) \leq \sum_{C} y_C &lt; \sum_{e\in W} c_e = \text{cost}(W)$. This contradicts bridge lemma (should be $\geq$ by lemma). $\blacksquare$.
+\paragraph{}
+Summarize: there exists probability distributions $\omega_C$ for all $C$ such that each edge $e \in W$ has a ``uniform&quot; probability to be deleted in each iteration. Thus $\frac{1}{M}$. Now to more forward against $(2)$ what is the probability that an edge $e \in S^*$ is deleted? In other words, what is the expected number of iterations until $e$ is deleted?
+\end{document}
+```</pre>
+</div>
+<div created="20170212175633020" modified="20170212175707713" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 11">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77eURmY0NNWGpGN28
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-02-09}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 11} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+(This lecture is a continuation of Lecture 10)
+\paragraph{Recall}
+Given an optimal Steiner Tree $S^*$ we construct witness tree $W$ by the following process:
+\begin{enumerate}
+\item Turn $S^*$ into a binary tree by adding $0$ cost edges.
+\item Choose one edge incident to each Steiner Node with probability $\frac{1}{2}$ and call the set of edges chosen $\tilde{B}$.
+\item Set $W = \{ uv \in {R \choose 2} : |P_{uv} \cap \tilde{B}| = 1\}$.
+\item For each $e \in S^*$ set $w(e) = \{ uv \in W : e \in P_{uv}\}$
+\end{enumerate}
+The Deletion Process is a follows: When a component $C^*$ is sampled, we delete some edges from $W$ such that $Pr[e \in W \text{ is deleted in each iteration}] \geq \frac{1}{M}$. When $w(e)$ are deleted, delete $e \in S^*$.
+\paragraph{}
+We hope to answer the question: How many iterations until $e \in S^*$ is deleted?
+\paragraph{Lemma $3$} For any $e \in S^*$ at level $k_e \leq |R| - 1$ from the root of the binary tree, one has
+$$Pr[|w(e)| = q] = \begin{cases}
+\frac{1}{2^q}, &amp;1\leq q &lt; k_e \\
+\frac{2}{2^q}, &amp;q=k_e \\
+0, &amp;\text{otherwise}.
+\end{cases}$$
+\paragraph{Proof of Lemma $3$}
+Let $e=v_0v_1$. If $(v_{q-1}, v_q)$ is the first edge of $\tilde{B}$ on the path $v_0$ to $r$ then $|w(e)| = q$. This happens with probability $\frac{1}{2^q}$. If $(v_{k_e - 1}, v_{k_e})$ is the first edge of $\tilde{B}$ on this path, OR if no edges of $\tilde{B}$ are on this path then $|w(e)| = k_e$. Each happens with probability $\frac{1}{2^{k_e}}$, so in total we have probability $\frac{1}{2^{k_e}} + \frac{1}{2^{k_e}} = \frac{2}{2^{k_e}}$.$\blacksquare$
+\paragraph{Lemma $4$}
+Let $\tilde{W} \subseteq W$. The the expected number of iterations until all edges of $\tilde{W}$ are removed is at most $H_{|\tilde{W}|} \cdot M$.
+\paragraph{Proof Idea Sketch for Lemma $4$}
+This situation is analogous to the coupon collector's problem: You have $n$ coupons, and you sample one in each iteration (with repetition). How many iterations $T$ do we wait (in expectation) until we collect all our coupons? You can define a random variable $t_i := $ time needed to collect $i$-th coupon after you have collected $i-1$ coupons. Then
+$$Pr[\text{collect new coupon } i] = \frac{n -(i-1)}{n}.$$
+One proves that $E[T] = \sum_{i=1}^n E[t_i] = \frac{n}{n} + \frac{n}{n-1} + \dots + \frac{n}{1} = n H_n$.
+\paragraph{Proof of Lemma $4$}
+We proceed by induction $q$ where $m_q$ is the number of iterations until $\tilde{W}$ is deleted ($q = |\tilde{W}|$). In the Base Case: $q=1$. Each edge is deleted with probability $\geq \frac{1}{M}$ which implies that $m_1 \leq M$.
+\paragraph{}
+Inductive Case: If we condition on the event that $i \in \{0,\dots,q\}$ edges are deleted in the first iteration then we need in expectation at most $m_{q-i}$ more iterations to delete the rest. Let $\lambda_i$ be the probability that at least $i$ edges are deleted in the first iteration. We obtain:
+\begin{align*}
+m_q &amp;\leq 1 + \sum_{i=0}^q Pr[i \text{ edge are deleted in 1st iteration}] m_{q-i} \\
+&amp;\leq 1 + \sum_{i=0}^q (\lambda_i - \lambda_{i+1}) \cdot m_q &amp;(\lambda_0 = 1, \lambda_{q+1} = 0, m_0 = 0) \\
+&amp;\leq 1 + M \sum_{i=1}^q \lambda_i(H_{q-i} - H_{q-i + 1}) +\lambda_1H_qM +(1-\lambda_1)m_q \\
+&amp;\leq 1 - \frac{1}{q}M\sum_{i=1}^q\lambda_i + \lambda_1H_qM(1-\lambda_1)m_q \\
+&amp;\leq \lambda_1 H_q M + 1-\lambda_1 m_q.
+\end{align*}
+Thus we have $m_q \leq H_q M.$ $\blacksquare$
+\paragraph{Theorem}
+For every fixed $k$ there exists a $\ln(4)$-approximation algorithm for $k$-restricted Steiner Tree.
+\paragraph{Proof}
+For each $e \in S^*$, let $D(e) = \max\{t | e \in S^t\}$. Then we have
+\begin{align*}
+E[D(e)] &amp;= \sum_{q=1}^{k_e} Pr[|w(e)|=q] \cdot E[D(e) | |w(e)|=q] \\
+&amp;\leq \sum_{q=1}^{k_e} Pr[|w(e)|=q] \cdot H_q \cdot M \\
+&amp;\leq \sum_{q=1}^{k_e-1}\frac{1}{2^q}H_qM  \frac{2}{2^{k_e}}H_{k_e}M \\
+&amp;\leq \sum_{q\geq 1} \frac{1}{2^q}H_q M \\
+&amp;= \ln(4) M.
+\end{align*}
+Finally we see:
+\begin{align*}
+E[\sum_{t\geq 1} c(C^t)] &amp;\leq \frac{1}{M} \sum_{t\geq 1} E[opt_k^t] \\
+&amp;\leq \frac{1}{M} \sum_{t \geq 1} E[c(S^t)] \\
+&amp;\leq \frac{1}{M} \sum_{e\in S^*} E[D(e)]c_e \\
+&amp;=\ln(4) \cdot c(S^*) \\
+&amp;= \ln(4) opt_k.\blacksquare
+\end{align*}
+\paragraph{Corollary}
+There exists a $\ln(4)+epsilon \leq 1.39$-approximation algorithm for Steiner Tree.
+\paragraph{Examples}
+Quasi-bipartite instances: instances where Steiner nodes are not adjacent to each other. Consider $S^*$ in this case. Each component of $S^*$ is a star graph centred at a Steiner Node. For each component of $S^*$ we take uniformly at random all but one edge in $\tilde{B}$. Let $\bar{k}$ be the number of terminals in one such component. Let $e$ be an edge of this component. Then
+$$|w(e)| = \begin{cases}
+1, &amp;\text{with probability }1-\frac{1}{\bar{k}} \\
+\bar{k}-1, &amp;\text{with probability } \frac{1}{\bar{k}}.
+\end{cases}$$
+So $E[D(e)] \leq \frac{1}{\bar{k}}H_{\bar{k}-1}M + (1-\frac{1}{\bar{k}} H_1 M \leq \frac{73}{60}M$.
+\paragraph{Final Remarks}
+The algorithm can be derandomized. There is a theorem of Goemans, Olver, Rothvoss, and Zenklusen from $2012$ which states the integrality gap is at most $1.39$ for the Directed Cut Relaxation Linear Program. Open question: Can one prove $&lt;2$ bound on the integrality gap of the Bidirected Cut Relaxation?
+\paragraph{Theorem}
+(Feldman, Koenemann, Olver, S' '14) BCR and DCR are equivalent for all instances such that Steiner Nodes induce a graph of maximum degree $2$.
+\end{document}
+
 ```</pre>
 </div>
 <div created="20170105211214011" modified="20170106171016203" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 2">
