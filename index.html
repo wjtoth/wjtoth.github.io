@@ -337,6 +337,8 @@ Error message and password prompt
 
 <li>Lecture 12</li>
 
+<li>Lecture 13</li>
+
 <li>Lecture 2</li>
 
 <li>Lecture 3</li>
@@ -9626,6 +9628,156 @@ Given an unweight $G=(V,E)$, find an Eulerian spanning (multi) subgraph of $G$ w
 \item (Sebo, Vygen '12) Ear Decomposition plus Removable Pairs leads to a $\frac{7}{5}$-approximation.
 \end{itemize}
 \end{document}
+```</pre>
+</div>
+<div created="20170217203018944" modified="20170217203046567" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 13">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77SE56Ri1VMG9kdHc
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+\usepackage{enumitem}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-02-17}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 13} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+\section{Graphic TSP}
+\paragraph{} We consider the setting of Graphic TSP. We are given an unweighted graph $G=(V,E)$, and we are to find an Eulerian Spanning (multi)-subgraph of $G$ with the minimum number of edges.
+\section{Removable Pairs}
+\paragraph{}
+In this section we study the method of Removable Pairs from (Momke and Svensonn 2011).
+\paragraph{}
+Given a $2$-vertex connected graph $G=(V,E)$, a $\textit{removable pairing}$ is a pair $(R, \cP)$ with the following properties:
+\begin{enumerate}[label=(\alph*)]
+\item $R \subseteq E$, $\cP \subseteq E\times E$.
+\item For all $P \in \cP$ there exists $v \in V$ and $3$ edges $e_1$, $e_2$, $e_3$ incident to $v$ such that $P = \{e_1, e_2\}$
+\item The elements of $\cP$ are pairwise disjoint
+\item For all $F\subseteq R$ with $|F\cap P| \leq $ for all $P \in \cP$, the graph $(V, E\backslash F)$ is connected.
+\end{enumerate}
+\paragraph{Questions}
+How do we find a ``good&quot; $(R,\cP)$. and how do we use it?
+\section{Finding a ``good&quot; $(R,\cP)$}
+\begin{lemma}
+Compute a DFS tree in $G$, rooted at $r$ and call in $(V,S)$. For all $e =vw \in E\backslash S$ let $v$ be on the $rw$-path in $S$, and $v'$ denotes the successor of $V$ on this path.
+\begin{itemize}
+\item Add $e$ to $R$
+\item If $|\delta(v)| \geq 3$ and $e' = vv' \not\in R$ add $e' $ to $R$ and $\{e,e'\}$ to $\cP$.
+\end{itemize}
+The resulting $(R,\cP)$ is a removable pairing.
+\end{lemma}
+\begin{proof}
+\paragraph{} It is trivial from our construction to see that $(a),(b),(c)$ hold. It remains to verify $(d)$.
+\paragraph{}
+Let $F \subseteq R$ such that $|F\cap P |\leq 1$ for all $P \in \cP$. For each $v$ let $W_v$ b the nodes in the subtree of $S$ rooted at $v$. We proceed by induction on $|W_v|$ to argue that $W_v$ is connected in $(V, E\backslash F)$. This is an easy exercise.
+\end{proof}
+\begin{theorem}\label{th:1}
+Let $G$ be a $2$-connected graph, $c: E \rightarrow \R_+$ and $(R,\cP)$ be a removable pairing in $G$. Then one can find a tour in $G$ of cost at most $$\frac{4}{3}c(E) - \frac{2}{3}c(R)$$ in polynomial time.
+\end{theorem}
+Before proving this theorem we will show its power in giving an approximation for graphic TSP
+\begin{theorem}
+There exists a $\frac{4}{3}$-approximation algorithm for graphic TSP in subcubic graphs (graphs where all nodes have degree at most $3$)
+\end{theorem}
+\begin{proof}
+We construct $(R,\cP)$ as in the previous Lemma. Observe that
+$$|R| \geq 2(|E|-|S|) - 1$$
+since all non-tree edges (except possibly one at the root) can be be paired with tree edges. From Theorem \ref{th:1} we get
+$$\frac{4}{3}|E| - \frac{2}{3}|R| \leq \frac{4}{3} |E| + \frac{4}{3}|E| + \frac{4}{3}|S| + \frac{2}{3} = \frac{4}{3}n - \frac{2}{3}.$$
+\end{proof}
+\paragraph{}
+We now present the proof of Theorem \ref{th:1}
+\paragraph{}
+\begin{proof}
+Let $T$ be the set of vertices of odd degree in $G$. Set $c'(e) = c(e)$ for all $E\backslash R$, $c'(e) = -c(e)$ for all $e \in R$. Note that for any $T$-join $J$ in $G$ that intersects each pair at most once, we can construct a tour on $G$ of cost at most $c(E) + c(J)$.
+\paragraph{}
+We can do that by doubling the edges of $J\backslash R$ and deleting the edges of $J\cap R$. Notice that the resulting graph is Eulerian, and it is connected since you remove only edges in $R$ that intersect each pair at most once.
+\paragraph{}
+We that there exists a $T$-join $J$ of $c'$ cost at most 
+$$\frac{1}{3} c'(E) - \frac{1}{3}c(E) - \frac{2}{3}c(R)$$
+intersecting each pair at most once. If we had such a $T$-join the proof would be complete.
+\paragraph{}
+We construct an auxiliary subgraph $G'$ as follows. For all $P=\{vw,v'w\} \in \cP$ we introduce one vertex $v_P$ connecting $v_P$ to $v$ with edge cost $0$, and keep edges $v_Pw, v_Pw'$ with their cost $c'$. Note that $G'$ will stay $2$-connected (WMA that the root has degree $3$), Let $T'$ be the set of odd vertices in $G'$. Then each $v_P \in T'$.
+\paragraph{}
+We show that there exists a $T'$-join in $G'$ of cost at most $\frac{1}{3}c'(E)$ (this naturally corresponds to a $T'$-join in $G$ with the same property) that intersects each pair at most once.
+\paragraph{}
+Consider $x'_e = \frac{1}{3}$ for all $e \in E(G')$. We will show that this is feasible for the $T'$-join polytope. Recall the constraints for the $T'$-join polytope:
+$$|A| - x(A) + x(\delta(U)\backslash A) \geq 1 \quad \forall U \subseteq V, A \subseteq \delta(U): |U \cap T'| + |A|\text{ is odd}$$
+Consider some $U\subseteq V$ and $A\subseteq \delta(U)$. Proceed by cases on $|A|$:
+\begin{enumerate}
+\item If $|A| \geq 2$ then $|A| - x'(A) = 2- \frac{2}{3} \geq 1$.
+\item If $|A| = 1$ then $x'(\delta(U)\backslash A) \geq \frac{1}{3}$ and $|A|-x'(A) = \frac{2}{3}$.
+\item If $A = \emptyset$ then there are at least $3$ edges crossing the cut, otherwise there exists a graph(by contracting all vertices on other side of cut) with an odd number of odd vertices. Thus $x'(\delta(U)) = 3\frac{1}{3} = 1$.
+\end{enumerate}
+So $x'$ is a fractional $T'$-join of cost $\frac{1}{3}c'(E)$ with the property $x'(\delta(v_P)) = 1$. So by polyhedral theory there exists an integral $T'$-join of cost at most $\frac{1}{3}c'(E)$ such that it intersect each pair at most once. This completes the proof.
+\end{proof}
+\end{document}
+
 ```</pre>
 </div>
 <div created="20170105211214011" modified="20170106171016203" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 2">
