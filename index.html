@@ -343,6 +343,8 @@ Error message and password prompt
 
 <li>Lecture 14</li>
 
+<li>Lecture 15</li>
+
 <li>Lecture 2</li>
 
 <li>Lecture 3</li>
@@ -9944,6 +9946,151 @@ Unless all terminals reach sources, the algorithm will find an alternating cycle
 When constructing a forward path, we stop at a vertex of out-degree $0$, hence it has a terminal. So by corollary we can start constructing a backward path. When constructing a backward path we will either find a previously visited node (node that flows must join source), or one with out-degree $2$. $\blacksquare$
 \paragraph{Proof of Theorem}
 Before an edge becomes singular it never increases flow value. After, we move at most $1$ terminal along the edge. Thus the increase in demand is at most that of the demand of one terminal which is at most $d_{max}$.$\blacksquare$
+\end{document}
+
+```</pre>
+</div>
+<div created="20170304214840646" modified="20170304214908622" tags="[[CO 750 - Topics in Approximation Algorithms]]" title="Lecture 15">
+<pre>https://drive.google.com/open?id=0B7Vqc_C-iJ77cWo3UlR4WTQzTW8
+
+```
+\documentclass[letterpaper,12pt,oneside,onecolumn]{article}
+\usepackage[margin=1in, bottom=1in, top=1in]{geometry} %1 inch margins
+\usepackage{amsmath, amssymb, amstext}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{theorem}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+
+%Macros
+\newcommand{\A}{\mathbb{A}} \newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}} \newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}} \newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}} \newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+ 
+ 
+\newcommand{\cA}{\mathcal{A}} \newcommand{\cB}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}} \newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}} \newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}} \newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}} \newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cK}{\mathcal{K}} \newcommand{\cL}{\mathcal{L}}
+\newcommand{\cM}{\mathcal{M}} \newcommand{\cN}{\mathcal{N}}
+\newcommand{\cO}{\mathcal{O}} \newcommand{\cP}{\mathcal{P}}
+\newcommand{\cQ}{\mathcal{Q}} \newcommand{\cR}{\mathcal{R}}
+\newcommand{\cS}{\mathcal{S}} \newcommand{\cT}{\mathcal{T}}
+\newcommand{\cU}{\mathcal{U}} \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cW}{\mathcal{W}} \newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}} \newcommand{\cZ}{\mathcal{Z}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+
+\newenvironment{proof}{{\bf Proof:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofof}[1]{{\bf Proof of #1:  }}{\hfill\rule{2mm}{2mm}}
+\newenvironment{proofofnobox}[1]{{\bf#1:  }}{}\newenvironment{example}{{\bf Example:  }}{\hfill\rule{2mm}{2mm}}
+
+%\renewcommand{\thesection}{\lecnum.\arabic{section}}
+%\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+
+\newtheorem{fact}{Fact}[section]
+\newtheorem{lemma}[fact]{Lemma}
+\newtheorem{theorem}[fact]{Theorem}
+\newtheorem{definition}[fact]{Definition}
+\newtheorem{corollary}[fact]{Corollary}
+\newtheorem{proposition}[fact]{Proposition}
+\newtheorem{claim}[fact]{Claim}
+\newtheorem{exercise}[fact]{Exercise}
+\newtheorem{note}[fact]{Note}
+\newtheorem{conjecture}[fact]{Conjecture}
+
+\newcommand{\size}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+
+%END MACROS
+%Page style
+\pagestyle{fancy}
+
+\listfiles
+
+\raggedbottom
+
+\lhead{2017-03-02}
+\rhead{William Justin Toth CO750-Approximation Algorithms Lecture 15} %CHANGE n to ASSIGNMENT NUMBER ijk TO COURSE CODE
+\renewcommand{\headrulewidth}{1pt} %heading underlined
+%\renewcommand{\baselinestretch}{1.2} % 1.2 line spacing for legibility (optional)
+
+\begin{document}
+\paragraph{Recall}
+Given directed graph $G=(V,E)$, source $s \in V$,and terminals $t_1,\dots,t_k$ with demands $d_1, \dots, d_k$, if $f$ is a fractional flow realizing the demands then there exists an unsplittable flow $\bar{f}$ realizing demands such that $\bar{f}(e) \leq f(e) + d_{max}$ for all $e \in E$.
+\paragraph{Note}
+The bound can be tight. Consider a graphs where source $s$ is adjacent to $q$ terminals, $t_1,\dots,t_q$ with arc capacities $1$ and demands $d_1=\dots=d_q=1-\frac{1}{q}$, and those $q$ terminals are all adjacent to terminal $t_{q+1}$ with capacity $\frac{1}{q}$ and demand $d_{q+1} = 1$. It is a good exercise to verify this is a tight example.
+\paragraph{}
+Now suppose we consider the weighted cases. If each edge has weight $w(e)\geq 0$ then we say our flow $f$ has weight $w(f) = \sum_e w(e) f(e)$.
+\paragraph{Conjecture}(Goemans '2000) There exists an unspittable flow $\bar{f}$ realizing the demands such that $\bar{f}(e) \leq f(e) + d_{max}$ and $w(\bar{f}) \leq w(f)$. (It is a good exercise to verify that our algorithm in the unweighted case does not generalize to the weighted case: that is, we can make the difference in weight arbitrarily large).
+\paragraph{}(Skutella '02) There exists an unsplittable flow $\bar{f}$ with $w(\bar{f})\leq w(f)$ and $\bar{f}(e) \leq 2f(e) + d_{max}$. We will prove this later but first we need to review some basic theory about flows.
+\paragraph{Theorem} Let $G$ be a digraph, $s \in V$, $t_1,\dots, t_k \in V$, $d_1,\dots, d_k$ as before. If $d_1,\dots,d_k \in \alpha \N$ for some $\alpha \in \R$ and each capacity $c(e) \in \alpha \N$ such that $\sum_{e\in\delta(s)} c(e) \geq \sum_{i:t_I \in S} d_i$ for all $S \subseteq V\backslash\{s\}$, then there exists a fractional flow such that $f(e) \in \alpha \N$ for all $e\in E$. This follows quickly from the theorem from $650$ when $alpha =1 $.
+\paragraph{}
+We say $d_i \mid d_j$ if there exists $p \in \Z$ such that $d_j = p d_i$.
+\paragraph{}
+Order our demands as $d_{min} = d+1 \leq d_2 \leq \dots \leq d_k = d_{max}$.
+\begin{theorem}\label{th:div}
+If $\forall i,j \in [k]$ with $i&lt;j$ we have $d_i \mid d_j$ then there exists an unsplittable flow $\bar{f}$ such that $\bar{f}(e) \leq f(e) + d_{max}$ and $w(\bar{f}) \leq w(f)$.
+\end{theorem}
+\begin{proof}
+Let $\delta_1\leq \dots \leq \delta_\ell$ be the values of the different demands. Consider the algorithm:
+
+\begin{enumerate}
+\item Set $f_0 = f$, $j=1$
+\item While $j\leq \ell$ do:
+	\begin{enumerate}
+	\item Set $u^j(e) = f_{j-1}(e)$ rounded up to the nearest multiple of $\delta_j$
+	\item Compute $\delta_j$-integral flow  $f_j$ that satisfies all demands and such that $w(f_j) \leq w(f_{j-1})$.
+	\item For all terminals $t_i$ with $d_i = \delta_j$, select an arbitrary path $P_i$ carrying flow $d_i$ from $s$ to $t_i$.
+	\item Decrease $f_j$ along $P_i$ by $d_j$ for all $i$ and remove edges with flow $0$. Remove such terminals from our instance.
+	\end{enumerate}
+\end{enumerate}
+Let $\bar{f}$ be the unsplittable flow realized by the paths, $P_1, \dots, P_k$, in our algorithm. Trivially by inductino $w(\bar{f}) \leq w(f)$. Now it remains to bound $\bar{f}(e)$.
+\paragraph{}
+At the end of each iteration $j$ of our algorithm we have:
+\begin{align*}
+\bar{f}(e) &amp;\leq f_j(e) + \sum_{i:d_i\leq \delta_j, e\in P_i} d_i \\
+&amp;= f_j(e) + \sum_{i:d_i = \delta_j, e\in P_i} d_i + \sum_{i:&lt; \delta_j, e\in P_i} d_i \\
+&amp;\leq u^j(e) + \sum_{i:d_i &lt; \delta_j, e\in P_i} d_i. 
+\end{align*}
+\paragraph{}Note that $f_{j-1}$ is $\delta_{j-1}$-integral, and $\delta_{j-1}\mid \delta_j$ for $j &gt; 1$. Therefore $u^j(e) \leq f_{j-1}(e) + \delta_j - \delta_{j-1}$.
+Setting $\delta_0 = 0$ we obtain:
+$$\bar{f}(e) \leq f_{j-1}(e) + \delta_j - \delta_{j-1} + \sum_{i:d_i &lt; \delta_j, e\in P_i} d_i.$$
+Applying the above iteratively we obtain
+$$f_j(e) + \sum_{i:d_i\leq \delta_j, e\in P_i} d_i \leq f_0(e) + \delta_j - \delta_0.$$
+In particular in the last iteration this implies:
+
+$$\bar{f}(e) \leq f_0(e) + \delta_\ell - \delta_0 = f(e) + d_{max} - 0.$$
+
+\end{proof}
+\paragraph{Corollary}
+For all $e\in E$ let $i_e$ be the index of a terminal using $e$, that is $e \in P_i$, and has maximum demand among all such terminals. Then $\sum_{i\neq i_e : e \in P_i} d_i \leq f(e)$. This follows easily by rearranging the inequality obtained in the previous theorem.
+\paragraph{General case}
+We now use the above theorem to prove the general case. Consider the following algorithm:
+\begin{enumerate}
+\item Round as $\bar{d}_i = d_{min}\cdot 2^{\floor{\log \frac{d_i}{d_{min}}}}$
+\item Modify $f$: Consider all terminals $t_i$ with $d_i \neq \bar{d}_i$ and:
+\begin{enumerate}
+\item Iteratively reduce flow on the most expensive $st_i$-path (deleting edges with $0$ flow). We obtain $\tilde{f}$ satisfying $\bar{d}$.
+\end{enumerate}
+\item Apply previous algorithm to $\tilde{f}$ with demands $\bar{d}$, returning unsplittable flow $\bar{f}$ satisfying $w(\bar{f}) \leq w(\tilde{f})$ and $\bar{f}(e) \leq \tilde{f}(e) + d_{max}$.
+\item Add $d_i - \bar{d}_i$ amount of flow on each path $P_i$ specified by $\bar{f}$. We obtain an unsplittable flow $\bar{\bar{f}}$ satisfying $d_1,\dots,d_k$.
+\end{enumerate}
+We have $$w(\bar{\bar{f}}) = \sum_{i=1}^k w(P_i)(d_i -\bar{d}_i) + w(\tilde{f}) \leq w(f) - w(\tilde{f}) + w(\tilde{f}) = w(f).$$
+Furthermore, $d_i \leq 2 \bar{d}_i$ so with this, and the corollary, we get 
+$$\sum_{i: e\in P_i} d_i \leq d_{i_e} + 2\sum_{i\neq i_e : e\in P_i} \bar{d}_i \leq d_{i_e} + 2f(e)$$
+as desired.$\blacksquare$
 \end{document}
 
 ```</pre>
